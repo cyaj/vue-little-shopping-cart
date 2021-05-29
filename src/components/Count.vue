@@ -4,7 +4,7 @@
     <input
       type="number"
       class="form-control inp"
-      v-model="counts"
+      v-model.number="counts"
       @change="inputFn"
     />
     <button type="button" class="btn btn-light" @click="add">+</button>
@@ -42,7 +42,7 @@ export default {
       },
       set(value) {
         if (value < 1) value = 1
-        this.bus.$emit('changeCount', +value, this.id)
+        this.bus.$emit('changeCount', value, this.id)
       },
     },
   },
