@@ -2,7 +2,7 @@
   <div id="container">
     <MyHeader></MyHeader>
     <GoodsItem v-for="item in goodsList" :key="item.id" :goods="item" @changeState="changeState"></GoodsItem>
-    <MyFooter></MyFooter>
+    <MyFooter :goodsList="goodsList" @allCheck="allCheck"></MyFooter>
   </div>
 </template>
 
@@ -32,8 +32,13 @@ export default {
     if (status === 200) this.goodsList = list
   },
   methods: {
+    // 复选框状态
     changeState (value, id) {
       this.goodsList.find(item => item.id === id).goods_state = value
+    },
+    // 全选功能
+    allCheck (value) {
+      this.goodsList.forEach(item => item.goods_state = value)
     }
   }
 }
