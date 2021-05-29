@@ -2,7 +2,12 @@
   <div class="my-goods-item">
     <div class="left">
       <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" :id="goods.id" v-model="isChecked"/>
+        <input
+          type="checkbox"
+          class="custom-control-input"
+          :id="goods.id"
+          v-model="isChecked"
+        />
         <label class="custom-control-label" :for="goods.id">
           <img :src="goods.goods_img" alt="" />
         </label>
@@ -12,14 +17,18 @@
       <div class="top">{{ goods.goods_name }}</div>
       <div class="bottom">
         <span class="price">¥ {{ goods.goods_price }}</span>
-        <span>counter组件</span>
+        <Count :count="goods.goods_count" :id="goods.id"></Count>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Count from './Count'
 export default {
+  components: {
+    Count,
+  },
   props: {
     goods: {
       type: Object,
@@ -28,13 +37,13 @@ export default {
   },
   computed: {
     isChecked: {
-      get () {
+      get() {
         return this.goods.goods_state
       },
-      set (value) {
+      set(value) {
         this.$emit('changeState', value, this.goods.id)
-      }
-    }
+      },
+    },
   },
 }
 </script>

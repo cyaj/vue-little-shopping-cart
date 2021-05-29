@@ -1,7 +1,12 @@
 <template>
   <div id="container">
     <MyHeader></MyHeader>
-    <GoodsItem v-for="item in goodsList" :key="item.id" :goods="item" @changeState="changeState"></GoodsItem>
+    <GoodsItem
+      v-for="item in goodsList"
+      :key="item.id"
+      :goods="item"
+      @changeState="changeState"
+    ></GoodsItem>
     <MyFooter :goodsList="goodsList" @allCheck="allCheck"></MyFooter>
   </div>
 </template>
@@ -30,17 +35,21 @@ export default {
     const { status, list } = res.data
     // console.log(res)
     if (status === 200) this.goodsList = list
+    // 数量变化
+    this.bus.$on('changeCount', (count, id) => {
+      this.goodsList.find(item => item.id === id).goods_count = (count | 0)
+    })
   },
   methods: {
     // 复选框状态
-    changeState (value, id) {
+    changeState(value, id) {
       this.goodsList.find(item => item.id === id).goods_state = value
     },
     // 全选功能
-    allCheck (value) {
-      this.goodsList.forEach(item => item.goods_state = value)
+    allCheck(value) {
+      this.goodsList.forEach(item => (item.goods_state = value))
     }
-  }
+  },
 }
 </script>
 
