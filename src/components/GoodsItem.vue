@@ -16,8 +16,8 @@
     <div class="right">
       <div class="top">{{ goods.goods_name }}</div>
       <div class="bottom">
-        <span class="price">¥ {{ goods.goods_price }}</span>
-        <Count :count="goods.goods_count" :id="goods.id"></Count>
+        <span class="price">¥ {{ goods.goods_price | formatPrice }}</span>
+        <Count :count="goods.goods_count" @changeCount="changeCount"></Count>
       </div>
     </div>
   </div>
@@ -33,6 +33,11 @@ export default {
     goods: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    changeCount(count) {
+      this.$emit('changeCount', count, this.goods.id)
     },
   },
   computed: {

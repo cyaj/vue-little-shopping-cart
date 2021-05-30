@@ -1,10 +1,10 @@
 <template>
   <div class="my-counter">
-    <button type="button" class="btn btn-light" @click="minus">-</button>
+    <button type="button" class="btn btn-light" :disabled="count === 1" @click="minus">-</button>
     <input
       type="number"
       class="form-control inp"
-      v-model.number="counts"
+      :value="count"
       @change="inputFn"
     />
     <button type="button" class="btn btn-light" @click="add">+</button>
@@ -18,32 +18,24 @@ export default {
       type: Number,
       default: 1,
     },
-    id: {
-      type: Number,
-      required: true,
-    },
   },
   methods: {
     minus() {
-      if (this.counts <= 1) return
-      this.counts--
+      if (this.count <= 1) return
+      this.$emit('changeCount', this.count - 1)
     },
     add() {
-      this.counts++
+      this.$emit('changeCount', this.count + 1)
     },
     inputFn(e) {
-      if (+e.target.value < 1) e.target.value = 1
-    },
-  },
-  computed: {
-    counts: {
-      get() {
-        return this.count
-      },
-      set(value) {
-        if (value < 1) value = 1
-        this.bus.$emit('changeCount', value, this.id)
-      },
+      let num = +e.target.value | 0
+      if (num < 1) {
+        num = 1
+        e.target.value = num
+      }
+      this.$emit('changeCount', num)
+      // 输入框数字取整
+      e.target.value = +e.target.value | 0
     },
   },
 }

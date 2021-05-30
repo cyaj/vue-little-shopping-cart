@@ -14,10 +14,14 @@
     <!-- 合计 -->
     <div>
       <span>合计:</span>
-      <span class="price"> ¥ {{ totalPrice }}</span>
+      <span class="price"> ¥ {{ totalPrice | formatPrice }}</span>
     </div>
     <!-- 按钮 -->
-    <button type="button" class="footer-btn btn btn-primary">
+    <button
+      type="button"
+      :disabled="!totalNum"
+      class="footer-btn btn btn-primary"
+    >
       结算 ({{ totalNum }})
     </button>
   </div>
@@ -41,22 +45,14 @@ export default {
       },
     },
     totalPrice() {
-      let price = 0
-      this.goodsList.forEach(item => {
-        if (item.goods_state) {
-          price += item.goods_price * item.goods_count
-        }
-      })
-      return price.toFixed(2)
+      return this.goodsList
+        .filter(item => item.goods_state)
+        .reduce((prev, item) => prev + item.goods_count * item.goods_price, 0)
     },
     totalNum() {
-      let num = 0
-      this.goodsList.forEach(item => {
-        if (item.goods_state) {
-          num += item.goods_count
-        }
-      })
-      return num
+      return this.goodsList
+        .filter(item => item.goods_state)
+        .reduce((prev, item) => prev + item.goods_count, 0)
     },
   },
 }

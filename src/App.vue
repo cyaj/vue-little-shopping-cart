@@ -6,6 +6,7 @@
       :key="item.id"
       :goods="item"
       @changeState="changeState"
+      @changeCount="changeCount"
     ></GoodsItem>
     <MyFooter :goodsList="goodsList" @allCheck="allCheck"></MyFooter>
   </div>
@@ -35,10 +36,6 @@ export default {
     const { status, list } = res.data
     // console.log(res)
     if (status === 200) this.goodsList = list
-    // 数量变化
-    this.bus.$on('changeCount', (count, id) => {
-      this.goodsList.find(item => item.id === id).goods_count = (count | 0)
-    })
   },
   methods: {
     // 复选框状态
@@ -48,12 +45,16 @@ export default {
     // 全选功能
     allCheck(value) {
       this.goodsList.forEach(item => (item.goods_state = value))
-    }
+    },
+    // 改变数量
+    changeCount(count, id) {
+      this.goodsList.find(item => item.id === id).goods_count = count
+    },
   },
 }
 </script>
 
-<style>
+<style scoped>
 #container {
   padding-top: 45px;
   padding-bottom: 50px;
